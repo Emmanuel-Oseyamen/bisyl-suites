@@ -21,6 +21,14 @@ const rooms = [
       "Spacious executive accommodation with refined interiors, smart entertainment, dedicated workspace and personalized hospitality.",
     features: ["Workspace", "Smart TV", "Room Service"],
   },
+  {
+    name: "Premium Suite",
+    price: "From ₦35,000",
+    image: "/rooms/room3.png",
+    description:
+      "A beautifully appointed suite designed for guests who appreciate extra space, elevated comfort and a refined hospitality experience.",
+    features: ["King Bed", "Premium Space", "Room Service"],
+  },
 ];
 
 export default function Rooms() {
@@ -37,124 +45,116 @@ export default function Rooms() {
   const room = rooms[current];
 
   return (
-    <section className="bg-[#faf8f5] py-24" id="rooms">
-      <div className="mx-auto max-w-7xl px-6">
-
-        <div className="mb-16 text-center">
-
-          <p className="uppercase tracking-[7px] text-[#D4A373]">
+    <section
+      id="rooms"
+      className="bg-[#faf8f5] px-4 py-16 sm:px-6 sm:py-20 lg:py-24"
+    >
+      <div className="mx-auto max-w-7xl">
+        {/* Section heading */}
+        <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14 lg:mb-16">
+          <p className="text-xs font-medium uppercase tracking-[4px] text-[#D4A373] sm:text-sm sm:tracking-[7px]">
             Luxury Accommodation
           </p>
 
-          <h2 className="mt-4 text-5xl font-bold">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:mt-4 sm:text-4xl lg:text-5xl">
             Signature Rooms
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-slate-600">
-            Beautifully designed spaces offering comfort,
-            elegance and exceptional hospitality.
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:mt-5 sm:text-base sm:leading-7">
+            Beautifully designed spaces offering comfort, elegance and
+            exceptional hospitality.
           </p>
-
         </div>
 
-        <div className="relative overflow-hidden rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,.18)]">
-
+        {/* Room showcase */}
+        <div className="relative overflow-hidden rounded-[28px] shadow-[0_25px_70px_rgba(0,0,0,.16)] sm:rounded-[36px] lg:rounded-[40px]">
           <AnimatePresence mode="wait">
-
             <motion.div
               key={current}
-              initial={{
-                opacity: 0,
-                scale: 1.08,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                scale: 1.03,
-              }}
-              transition={{
-                duration: 1.2,
-              }}
-              className="relative h-[750px]"
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 1.1 }}
+              className="relative min-h-[650px] sm:min-h-[650px] lg:h-[700px] lg:min-h-0"
             >
-
               <Image
                 src={room.image}
                 alt={room.name}
                 fill
-                priority
-                className="object-cover"
+                priority={current === 0}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+                className="object-cover object-center"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
+              {/* Mobile / desktop overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/25 lg:to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
+              {/* Room information */}
               <motion.div
-                initial={{
-                  opacity: 0,
-                  x: 80,
-                }}
-                animate={{
-                  opacity: 1,
-                  x: 0,
-                }}
-                transition={{
-                  delay: .5,
-                  duration: .8,
-                }}
-                className="absolute right-8 top-1/2 w-[420px] -translate-y-1/2 rounded-[30px] border border-white/20 bg-white/10 p-10 backdrop-blur-xl"
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.7 }}
+                className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 lg:bottom-auto lg:left-auto lg:right-8 lg:top-1/2 lg:w-[420px] lg:-translate-y-1/2 lg:p-0"
               >
+                <div className="rounded-[24px] border border-white/20 bg-black/25 p-5 backdrop-blur-xl sm:rounded-[28px] sm:p-7 lg:rounded-[30px] lg:bg-white/10 lg:p-9">
+                  <p className="text-xs uppercase tracking-[4px] text-[#D4A373] sm:text-sm sm:tracking-[6px]">
+                    Bisyl Suites
+                  </p>
 
-                <p className="uppercase tracking-[6px] text-[#D4A373]">
-                  Bisyl Suites
-                </p>
+                  <h3 className="mt-2 text-3xl font-light text-white sm:mt-3 sm:text-4xl">
+                    {room.name}
+                  </h3>
 
-                <h3 className="mt-4 text-4xl font-light text-white">
-                  {room.name}
-                </h3>
+                  <div className="mt-4 inline-flex rounded-full bg-[#D4A373] px-4 py-2 text-sm font-semibold text-black sm:mt-5 sm:px-5 sm:text-base">
+                    {room.price}/Night
+                  </div>
 
-                <div className="mt-5 inline-block rounded-full bg-[#D4A373] px-5 py-2 font-semibold text-black">
-                  {room.price}/Night
+                  <p className="mt-5 text-sm leading-6 text-white/90 sm:mt-7 sm:text-base sm:leading-7 lg:mt-8 lg:leading-8">
+                    {room.description}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2 sm:mt-7 sm:gap-3">
+                    {room.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className="rounded-full bg-white/15 px-3 py-1.5 text-xs text-white backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href="#contact"
+                    className="mt-6 flex min-h-[50px] w-full items-center justify-center rounded-full bg-[#D4A373] px-6 py-3.5 text-sm font-semibold text-black transition duration-300 hover:scale-[1.02] hover:bg-[#e0b282] active:scale-[0.98] sm:mt-8 sm:min-h-[54px] sm:text-base lg:w-fit lg:px-8"
+                  >
+                    Reserve This Room
+                  </a>
                 </div>
-
-                <p className="mt-8 leading-8 text-white/90">
-                  {room.description}
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-
-                  {room.features.map((feature) => (
-
-                    <span
-                      key={feature}
-                      className="rounded-full bg-white/15 px-4 py-2 text-sm text-white backdrop-blur-sm"
-                    >
-                      {feature}
-                    </span>
-
-                  ))}
-
-                </div>
-
-                <a
-                  href="#contact"
-                  className="mt-10 inline-flex rounded-full bg-[#D4A373] px-8 py-4 font-semibold text-black transition hover:scale-105"
-                >
-                  Reserve This Room
-                </a>
-
               </motion.div>
-
             </motion.div>
-
           </AnimatePresence>
 
-          {/* Progress Bar */}
+          {/* Room navigation */}
+          <div className="absolute left-1/2 top-5 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/20 px-3 py-2 backdrop-blur-md sm:top-6">
+            {rooms.map((roomItem, index) => (
+              <button
+                key={roomItem.name}
+                type="button"
+                onClick={() => setCurrent(index)}
+                aria-label={`View ${roomItem.name}`}
+                aria-current={current === index}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  current === index
+                    ? "w-8 bg-[#D4A373]"
+                    : "w-2 bg-white/60 hover:bg-white"
+                }`}
+              />
+            ))}
+          </div>
 
+          {/* Progress bar */}
           <motion.div
             key={current}
             initial={{ width: 0 }}
@@ -163,11 +163,9 @@ export default function Rooms() {
               duration: 10,
               ease: "linear",
             }}
-            className="absolute bottom-0 left-0 h-1 bg-[#D4A373]"
+            className="absolute bottom-0 left-0 z-30 h-1 bg-[#D4A373]"
           />
-
         </div>
-
       </div>
     </section>
   );
