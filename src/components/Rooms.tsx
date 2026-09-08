@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -31,15 +32,18 @@ const rooms = [
   },
 ];
 
+const ROOM_DURATION = 10000;
+const IMAGE_TRANSITION_DURATION = 1.1;
+
 export default function Rooms() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       setCurrent((prev) => (prev + 1) % rooms.length);
-    }, 10000);
+    }, ROOM_DURATION);
 
-    return () => clearInterval(timer);
+    return () => window.clearInterval(timer);
   }, []);
 
   const room = rooms[current];
@@ -50,7 +54,11 @@ export default function Rooms() {
       className="bg-[#faf8f5] px-4 py-16 sm:px-6 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-7xl">
-        {/* Section heading */}
+
+        {/* ================================================= */}
+        {/* SECTION HEADING                                  */}
+        {/* ================================================= */}
+
         <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14 lg:mb-16">
           <p className="text-xs font-medium uppercase tracking-[4px] text-[#D4A373] sm:text-sm sm:tracking-[7px]">
             Luxury Accommodation
@@ -66,38 +74,101 @@ export default function Rooms() {
           </p>
         </div>
 
-        {/* Room showcase */}
+        {/* ================================================= */}
+        {/* ROOM SHOWCASE                                    */}
+        {/* ================================================= */}
+
         <div className="relative overflow-hidden rounded-[28px] shadow-[0_25px_70px_rgba(0,0,0,.16)] sm:rounded-[36px] lg:rounded-[40px]">
+
+          {/* ================================================= */}
+          {/* ROOM IMAGES                                      */}
+          {/*                                                     */}
+          {/* All images remain mounted. This prevents the      */}
+          {/* browser from having to mount/load a new image    */}
+          {/* when the room changes.                            */}
+          {/* ================================================= */}
+
+          <div className="absolute inset-0">
+            {rooms.map((roomItem, index) => (
+              <motion.div
+                key={roomItem.image}
+                className="absolute inset-0"
+                initial={false}
+                animate={{
+                  opacity: current === index ? 1 : 0,
+                  scale: current === index ? 1.02 : 1.06,
+                }}
+                transition={{
+                  opacity: {
+                    duration: IMAGE_TRANSITION_DURATION,
+                    ease: "easeInOut",
+                  },
+                  scale: {
+                    duration: 2,
+                    ease: "easeOut",
+                  },
+                }}
+                style={{
+                  willChange: "opacity, transform",
+                }}
+              >
+                <Image
+                  src={roomItem.image}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  loading="eager"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+                  className="object-cover object-center"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* ================================================= */}
+          {/* OVERLAYS                                          */}
+          {/* ================================================= */}
+
+          {/* Desktop / Main Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/25 lg:to-transparent" />
+
+          {/* Extra Mobile Bottom Fade */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
+
+          {/* ================================================= */}
+          {/* ROOM CONTENT                                     */}
+          {/* ================================================= */}
+
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, scale: 1.06 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 1.1 }}
-              className="relative min-h-[650px] sm:min-h-[650px] lg:h-[700px] lg:min-h-0"
+              initial={{
+                opacity: 0,
+                y: 35,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+              }}
+              transition={{
+                opacity: {
+                  duration: 0.5,
+                  ease: "easeOut",
+                },
+                y: {
+                  duration: 0.7,
+                  ease: "easeOut",
+                },
+              }}
+              className="relative z-10 min-h-[650px] sm:min-h-[650px] lg:h-[700px] lg:min-h-0"
             >
-              <Image
-                src={room.image}
-                alt={room.name}
-                fill
-                priority={current === 0}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
-                className="object-cover object-center"
-              />
-
-              {/* Mobile / desktop overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/10 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/25 lg:to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
-
-              {/* Room information */}
-              <motion.div
-                initial={{ opacity: 0, y: 35 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.7 }}
-                className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 lg:bottom-auto lg:left-auto lg:right-8 lg:top-1/2 lg:w-[420px] lg:-translate-y-1/2 lg:p-0"
-              >
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 lg:bottom-auto lg:left-auto lg:right-8 lg:top-1/2 lg:w-[420px] lg:-translate-y-1/2 lg:p-0">
                 <div className="rounded-[24px] border border-white/20 bg-black/25 p-5 backdrop-blur-xl sm:rounded-[28px] sm:p-7 lg:rounded-[30px] lg:bg-white/10 lg:p-9">
+
                   <p className="text-xs uppercase tracking-[4px] text-[#D4A373] sm:text-sm sm:tracking-[6px]">
                     Bisyl Suites
                   </p>
@@ -131,12 +202,16 @@ export default function Rooms() {
                   >
                     Reserve This Room
                   </a>
+
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Room navigation */}
+          {/* ================================================= */}
+          {/* ROOM NAVIGATION                                  */}
+          {/* ================================================= */}
+
           <div className="absolute left-1/2 top-5 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/20 px-3 py-2 backdrop-blur-md sm:top-6">
             {rooms.map((roomItem, index) => (
               <button
@@ -154,17 +229,25 @@ export default function Rooms() {
             ))}
           </div>
 
-          {/* Progress bar */}
+          {/* ================================================= */}
+          {/* PROGRESS BAR                                     */}
+          {/* ================================================= */}
+
           <motion.div
             key={current}
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
+            initial={{
+              width: 0,
+            }}
+            animate={{
+              width: "100%",
+            }}
             transition={{
-              duration: 10,
+              duration: ROOM_DURATION / 1000,
               ease: "linear",
             }}
             className="absolute bottom-0 left-0 z-30 h-1 bg-[#D4A373]"
           />
+
         </div>
       </div>
     </section>
