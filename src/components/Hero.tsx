@@ -59,7 +59,7 @@ export default function Hero() {
             style={{
               filter:
                 index === 0
-                  ? "brightness(.78) blur(2px) contrast(1.08)"
+                  ? "brightness(.78) contrast(1.08)"
                   : "brightness(.82) contrast(1.12) saturate(1.08)",
               willChange: "opacity, transform",
             }}
